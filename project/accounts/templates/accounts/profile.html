@@ -10,4 +10,6 @@
     <h3>Bio</h3>
     {{ user.profile.bio|default:"&dash;" }}
 
+    <a href="{% url 'password_change' %}">비밀번호 변경</a>
+
 {% endblock%}
