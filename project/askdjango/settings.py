@@ -127,6 +127,8 @@ STATIC_URL = '/static/'
 
 from django.urls import reverse_lazy
 
+AUTH_USER_MODEL = 'accounts.User'
+
 LOGIN_URL = reverse_lazy('login')
 # LOGIN_REDIRECT_URL = reverse_lazy('profile')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
