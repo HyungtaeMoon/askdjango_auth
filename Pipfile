@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 django = "*"
 ipython = "*"
+python-dateutil = "*"
 
 [dev-packages]
 

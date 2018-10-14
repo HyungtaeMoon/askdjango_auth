@@ -11,7 +11,8 @@ class User(AbstractUser):
         choices=(
             ('f', 'female'),
             ('m', 'male'),
-        )
+        ),
+        verbose_name='성별'
     )
 
 
