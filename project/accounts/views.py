@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login as auth_login, get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordResetView, PasswordChangeView, PasswordResetConfirmView
 from django.core.exceptions import ValidationError
@@ -10,8 +11,9 @@ from django.shortcuts import render, resolve_url, redirect
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.utils.http import urlsafe_base64_decode
-from django.views.generic import CreateView
-from .forms import SignupForm
+from django.views.generic import CreateView, UpdateView
+from .forms import SignupForm, ProfileModel
+from .models import Profile
 
 '''
 def signup(request):
@@ -60,6 +62,18 @@ signup = CreateView.as_view(model=User,
 def profile(request):
     request.user    # django.contrib.auth.models.AnonymousUser
     return render(request, 'accounts/profile.html')
+
+
+class ProfileUpdateView(UpdateView, LoginRequiredMixin):
+    model = Profile
+    form_class = ProfileModel
+    success_url = reverse_lazy('profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user.profile
+
+
+profile_edit = ProfileUpdateView.as_view()
 
 
 class RequestLoginViaUrlView(PasswordResetView):
