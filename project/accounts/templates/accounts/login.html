@@ -2,17 +2,29 @@
 
 {% block content %}
 
-    <h2>로그인</h2>
+<h2>로그인하기</h2>
 
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-        </table>
-        <input type="submit" />
-    </form>
+<form action="" method="POST">
+    {% csrf_token %}
 
-    <a href="{% url 'request_login_via_url' %}">이메일로 로그인하기</a>
-    <a href="{% url 'password_reset' %}">비밀번호 초기화 하기</a>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm12">
+                <table class="table">
+                    {{ form.as_table }}
+                </table>
 
+                <button type="submit" class="btn btn-primary btn-block">로그인하기</button>
+
+                <div>
+                    <a href="{% url 'request_login_via_url' %}">이메일로 로그인하기</a>
+                </div>
+
+                <div>
+                    <a href="{% url 'password_reset' %}">비밀번호 초기화 하기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 {% endblock %}

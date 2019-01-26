@@ -1,17 +1,17 @@
 {% extends "blog/layout.html" %}
 
 {% block content %}
-    <table>
-    <tbody>
-    {% for post in post_list %}
-        <tr>
-            <td>
+{% for post in post_list %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table table-border table-hover">
                 <a href="{% url 'blog:post_detail' post.pk %}">
                     {{ post.title }}
                 </a>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-    </table>
+            </table>
+        </div>
+    </div>
+</div>
+{% endfor %}
 {% endblock %}
