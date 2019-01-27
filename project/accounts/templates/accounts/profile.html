@@ -1,37 +1,37 @@
 {% extends "accounts/layout.html" %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12">
-            <h2>{{ user.username }}'s profile</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>{{ user.username }}'s profile</h2>
 
-            <h3>Email</h3>
-            {{ user.email|default:"&dash;" }}
+                <h3>Email</h3>
+                {{ user.email|default:"&dash;" }}
 
-            <h3>Bio</h3>
-            {{ user.profile.bio|default:"&dash;" }}
+                <h3>Bio</h3>
+                {{ user.profile.bio|default:"&dash;" }}
 
-            <h3>WebSite URL</h3>
-            {{ user.profile.website_url|default:"&dash;" }}
+                <h3>WebSite URL</h3>
+                {{ user.profile.website_url|default:"&dash;" }}
 
-            <hr/>
+                <hr/>
 
-            <a href="{% url 'profile_edit' %}">
-                <div class="btn btn-primary btn-lg btn-block">
-                    프로필 수정
-                </div>
-            </a>
+                <a href="{% url 'profile_edit' %}">
+                    <div class="btn btn-primary btn-lg btn-block">
+                        프로필 수정
+                    </div>
+                </a>
 
 
-            <a href="{% url 'password_change' %}">
-                <div class="btn btn-secondary btn-lg btn-block">
-                    비밀번호 변경
-                </div>
-            </a>
+                <a href="{% url 'password_change' %}">
+                    <div class="btn btn-secondary btn-lg btn-block">
+                        비밀번호 변경
+                    </div>
+                </a>
 
+            </div>
         </div>
     </div>
-</div>
 
 {% endblock%}
