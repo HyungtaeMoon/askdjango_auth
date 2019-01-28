@@ -43,3 +43,16 @@ class ProfileModel(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['bio', 'website_url']
+
+        widgets = {
+            'bio': forms.Select(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'website_url': forms.URLInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            )
+        }

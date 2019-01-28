@@ -9,12 +9,15 @@ https://docs.djangoproject.com/en/2.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
-
+import json
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+ROOT_DIR = os.path.dirname(BASE_DIR)
+SECRETS_DIR = os.path.join(ROOT_DIR, '.secrets')
+secrets = json.load(open(os.path.join(SECRETS_DIR, 'base.json')))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -26,6 +29,14 @@ SECRET_KEY = '+$hbkov)a_kup&8)+5sydr2%u5*-n9@g%z#v^fb#qrx+xs@m!&'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+
+EMAIL_BACKEND = secrets['EMAIL_BACKEND']
+EMAIL_HOST = secrets['EMAIL_HOST']
+EMAIL_HOST_USER = secrets['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = secrets['EMAIL_HOST_PASSWORD']
+EMAIL_USE_TLS = secrets['EMAIL_USE_TLS']
+EMAIL_USER_SSL = secrets['EMAIL_USER_SSL']
 
 
 # Application definition
@@ -134,10 +145,3 @@ AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = reverse_lazy('login')
 # LOGIN_REDIRECT_URL = reverse_lazy('profile')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# EMAIL_HOST = 'localhost'
-# EMAIL_HOST_USER = ''
-# EMAIL_HOST_PASSWORD = ''
-# EMAIL_USE_TLS = False
-# EMAIL_USE_SSL = False
