@@ -142,6 +142,14 @@ from django.urls import reverse_lazy
 
 AUTH_USER_MODEL = 'accounts.User'
 
+# url 주소에 reverse 함수를 사용하여 주소를 전달
+# reverse_lazy = lazy(reverse, str)
 LOGIN_URL = reverse_lazy('login')
 # LOGIN_REDIRECT_URL = reverse_lazy('profile')
+
+# 로그아웃 후에 next 페이지를 지정해주지 않을 경우 아래의 변수가 실행됨
+#   이는 logoutview 에 동일한 변수가 있음
+#   현재는 템플릿에서 직접 파라미터로 ?next={{ request.path }} 를 지정하여
+#   보고 있는 현재 페이지로 다시 리다이렉트 되도록 설정(1순위)
+#       만약 1순위를 설정하지 않을 경우에는 아래의 경로로 리다이렉트 됨
 LOGOUT_REDIRECT_URL = reverse_lazy('login')

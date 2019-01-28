@@ -58,14 +58,24 @@ signup = CreateView.as_view(model=User,
 '''
 
 
-@login_required # 로그인되면 settings.LOGIN_URL 로 이동
+# 로그인되면 settings.LOGIN_URL 로 이동
+@login_required
 def profile(request):
-    request.user    # django.contrib.auth.models.AnonymousUser
+    # # 만약에 유저가 로그인을 한다면 프로필 페이지로 렌더를 해주고,
+    # if request.user:    # django.contrib.auth.models.AnonymousUser
+    #     return render(request, 'accounts/profile.html')
+    # # 그게 아닐 경우에는 로그인 페이지로 보내줌
+    # return redirect('accounts:login')
+
+    # login_required 데코레이터를 사용하여,
+    #   request.user 가 있을 경우에 accounts/profile.html 로 렌더해주고,
+    #   그게 아닐 경우에는 settings.LOGIN_URL 설정 경로(login) 페이지로 보내줌
+    request.user
     return render(request, 'accounts/profile.html')
 
 
 class ProfileUpdateView(UpdateView, LoginRequiredMixin):
-    model = Profile
+    model = ProfileModel
     form_class = ProfileModel
     success_url = reverse_lazy('profile')
 
