@@ -70,16 +70,20 @@ def profile(request):
     # login_required 데코레이터를 사용하여,
     #   request.user 가 있을 경우에 accounts/profile.html 로 렌더해주고,
     #   그게 아닐 경우에는 settings.LOGIN_URL 설정 경로(login) 페이지로 보내줌
-    request.user
-    return render(request, 'accounts/profile.html')
+    if request.user:
+        return render(request, 'accounts/profile.html')
+    return redirect('accounts:profile')
 
 
 class ProfileUpdateView(UpdateView, LoginRequiredMixin):
-    model = ProfileModel
+    model = Profile
     form_class = ProfileModel
     success_url = reverse_lazy('profile')
 
     def get_object(self):
+        # Profile 모델의 object 를 객체로 리턴시켜줌
+        #   get_object 를 사용하면 urls.py 에 pk나 slug 를 전달하지 않고도
+        #   업데이트 하고자 하는 유저의 프로필을 인식할 수 있음
         return self.request.user.profile
 
 
@@ -87,25 +91,43 @@ profile_edit = ProfileUpdateView.as_view()
 
 
 class RequestLoginViaUrlView(PasswordResetView):
+    # url 패턴은 login/url
+    #   protocol + url + login_via_url(메서드)
     template_name = 'accounts/request_login_via_url_form.html'
     title = '이메일을 통한 로그인'
+    # 유저에게 발송되는 이메일 양식으로 PasswordResetView 에서 정의되어있는 아래의 변수를
+    #   오버라이딩 하여 사용함
+    #   email_template_name = 'registration/password_reset_email.html'
+    #       (이메일로 발송된) 아래의 주소를 통해 로그인하실 수 있습니다. 와 같은 템플릿
     email_template_name = 'accounts/login_via_url.html'
     success_url = settings.LOGIN_URL
 
 
 def login_via_url(request, uidb64, token):
+    # login 이 url 통해(via) 된다는 뜻에서 메서드명을 login_via_url 로 사용
     User = get_user_model()
     try:
+        # 전자 메일을 통한 이진 전송 등에 많이 사용되는 base64(64진법)으로 매개변수 uidb64 를 디코딩
         uid = urlsafe_base64_decode(uidb64).decode()
+        # 로그인을 하고자 하는 유저의 DB 에 접근하여 pk 값을 uid 로 할당
+        #   uid 를 pk 로 할당함으로 인해서 url resolver 에서 따로 pk 를 받을 필요가 없음
         current_user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist, ValidationError):
         raise Http404
 
+    # current_user 는 로그인을 한 유저 object
+    # uid 와 token 은 딕셔너리 타입으로 같이 받아야 함
+    #   {'uidb64': 'Mw', 'token': '53e-74ab7afa29aba9xxxxxx'} 와 같은 키워드 인자 에러 발생
+    #   또한 유저를 식별할 수 있는 토큰 값이 없으면 보안상의 문제가 발생할 것으로 예상
     if default_token_generator.check_token(current_user, token):
+        # login 함수를 통한 로그인 처리
         auth_login(request, current_user)
         messages.info(request, '로그인이 승인되었습니다')
+        # config.urls 에 root 로 정의시켜놓은 blog:post-list 로 리다이렉트
         return redirect('root')
 
+    # 등록한 아이디가 없을 경우에 error 메시지를 출력
+    #   현재 이 기능은 작동하지 않고, 템플릿에서도 보여지지 않는 상태로 수정이 필요
     messages.error(request, '로그인이 거부되었습니다')
     return redirect('root')
 

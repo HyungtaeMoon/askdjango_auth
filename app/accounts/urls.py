@@ -11,9 +11,13 @@ urlpatterns = [
     #   그렇지 않다면 admin 페이지의 로그아웃 템플릿이 사용되어짐
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('profile/', views.profile, name='profile'),
+    # get_object 메서드를 오버라이딩하여 유저를 식별할 수 있어, <int:pk> 값이 없어도 됨
     path('profile/edit', views.profile_edit, name='profile_edit'),
 
+    # 이메일로 로그인하기 에 접근하여 PasswordResetView 를 사용한 이메일로 로그인하기 기능 구현
+    #   email_template_name 이 원래 reset form 이었으나 login_via_url.html 로 양식을 변경
     path('login/url', views.RequestLoginViaUrlView.as_view(), name='request_login_via_url'),
+    # uid=base64(64진법) 으로 인코딩 된 데이터를 디코딩, str 타입의 토큰을 받아 처리
     path('login/<uidb64>/<token>/', views.login_via_url, name='login_via_url'),
 
     path('password_change/', views.MyPasswordChangeView.as_view(), name='password_change'),
