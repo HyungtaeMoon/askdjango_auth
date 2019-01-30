@@ -133,10 +133,19 @@ def login_via_url(request, uidb64, token):
 
 
 class MyPasswordChangeView(PasswordChangeView):
+    """
+    PasswordChangeView 안에는 아래의 클래스가 정의되어 있고, 사용자는 이를 이용하여 편하게 사용한다.
+     1) request 받는 old_password 와 DB 에서 해당 유저의 password 를 비교
+     2) cleaned_data 로 password1 과 password2 를 비교하여 저장
+    """
+    # PasswordChangeView 에 정의되어 있는 success_url, template_name 을 사용
     success_url = reverse_lazy('profile')
+    #   아래의 admin 페이지를 새로 재정의 하여 사용
+    # template_name = 'registration/password_change_form.html'
     template_name = 'accounts/password_change_form.html'
 
     def form_valid(self, form):
+        # PasswordChangeView 의 form_valid 메서드를 재정의
         messages.info(self.request, '비밀번호 변경을 완료했습니다.')
         return super().form_valid(form)
 
