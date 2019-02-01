@@ -153,6 +153,8 @@ class MyPasswordChangeView(PasswordChangeView):
 class MyPasswordResetView(PasswordResetView):
     success_url = reverse_lazy('login')
     template_name = 'accounts/password_reset_form.html'
+    # PasswordResetForm 의 send_mail 메서드로
+    #   email_template_name, html_email_template_name 을 오버라이딩하여 사용
     # email_template_name = ...
     # html_email_template_name = ...
 

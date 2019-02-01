@@ -26,5 +26,6 @@ urlpatterns = [
     # ), name='password_change_done'),
 
     path('password_reset/', views.MyPasswordResetView.as_view(), name='password_reset'),
+    # MyPasswordResetView 를 통해 발급받은 uidb/token 값을 포함한 주소로 get 요청을 하여 비밀번호를 초기화
     path('reset/<uidb64>/<token>/', views.MyPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 ]
