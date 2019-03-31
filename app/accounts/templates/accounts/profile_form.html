@@ -8,8 +8,8 @@
 
                 <form action="" method="POST">
                     {% csrf_token %}
-                    <table class="table">
-                        {{ form.as_table }}
+                    <table>
+                        {{ form }}
                     </table>
                     <button type="submit" class="btn btn-primary btn-lg btn-block">수정하기</button>
                 </form>
